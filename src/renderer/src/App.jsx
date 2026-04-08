@@ -226,7 +226,7 @@ const DEFAULT_SIGNATURES = {
       nameColor: '#4f46e5',
       designationSize: '12px',
       designationColor: '#3b82f6',
-      companySize: '16px',
+      companySize: '14px',
       companyColor: '#ef4444',
       addressSize: '12px',
       addressColor: '#333333',
@@ -537,12 +537,10 @@ function App() {
       ['Claim Reg. No.', d.claimRegNo],
       ['Name of Beneficiary', d.nameOfBeneficiary],
       ['Phone No', d.phoneNo],
-      ['Address', d.address],
       ['Village', d.village],
       ['Taluka', d.taluka],
       ['District', d.district],
       ['State', d.state],
-      ['Pin Code', d.pinCode],
       ['Date of Death', formatExcelDate(d.dateOfDeath)],
       ['Time of Death', formatExcelTime(d.timeOfDeath)],
       ['Tag No.', d.tagNo],
@@ -558,7 +556,7 @@ function App() {
     ]
 
     return `
-      <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; max-width: 600px; margin: 25px 0; font-family: sans-serif; font-size: 14px; border: 1px solid #e2e8f0; color: #1e293b;">
+      <table border="1" cellpadding="4" cellspacing="0" style="border-collapse: collapse; width: 100%; max-width: 600px; margin: 25px 0; font-family: sans-serif; font-size: 14px; border: 1px solid #e2e8f0; color: #1e293b;">
         <tbody>
           ${rows
             .map(
@@ -582,12 +580,10 @@ function App() {
       ['Claim Reg. No.', d.claimRegNo],
       ['Name of Beneficiary', d.nameOfBeneficiary],
       ['Phone No', d.phoneNo],
-      ['Address', d.address],
       ['Village', d.village],
       ['Taluka', d.taluka],
       ['District', d.district],
       ['State', d.state],
-      ['Pin Code', d.pinCode],
       ['Date of Death', formatExcelDate(d.dateOfDeath)],
       ['Time of Death', formatExcelTime(d.timeOfDeath)],
       ['Tag No.', d.tagNo],
@@ -877,7 +873,13 @@ function App() {
             subject: genSubject,
             emailType: type,
             emailTo: finalTo,
-            ccTo: finalCc.filter(Boolean).join(', '),
+            ccTo: finalCc
+              .filter(Boolean)
+              .map((e) => e.trim())
+              .filter(
+                (e, i, self) => self.findIndex((x) => x.toLowerCase() === e.toLowerCase()) === i
+              )
+              .join(', '),
             emailBody: '',
             status: 'Pending',
             fetchedEmails: fetchedEmails,

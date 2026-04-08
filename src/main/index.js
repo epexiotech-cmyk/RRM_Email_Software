@@ -145,8 +145,12 @@ app.whenReady().then(() => {
 
           if (entry.isDirectory()) {
             // Folder exclusions
-            if (emailType === 'Tagging' && entry.name.toUpperCase().startsWith('HC')) continue
-            if (emailType === 'Claim' && entry.name.toLowerCase() === 'extra') continue
+            const entryNameLower = entry.name.toLowerCase()
+            if (emailType === 'Tagging') {
+              if (entry.name.toUpperCase().startsWith('HC')) continue
+              if (entryNameLower === 'rejected' || entryNameLower === 'rejection') continue
+            }
+            if ((emailType === 'Claim' || emailType === 'Retagging') && entryNameLower === 'extra') continue
 
             scan(fullPath)
           } else if (entry.isFile()) {
